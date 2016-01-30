@@ -1,0 +1,24 @@
+language: go
+go:
+- 1.5.3
+- tip
+env: PATH=/home/travis/gopath/bin:$PATH
+install: go get github.com/mitchellh/gox
+script: make test
+after_success:
+- echo "packaging by ${TRAVIS_GO_VERSION}"
+- make package
+notifications:
+  slack:
+    secure: pHsBgsSaVRERmSjiJdPXFQ6ficRQh4SDnzc1ZTg5CRLWD6W2HAMroBLOU7k/YPYL22ZQk32zTQl+TGZVvmpImRZDE616KBRVfzDCoBIpDdb6EJ/W+JmSTJ7YwnkBdTkooTjp40ab/FJKMgCQrpeBdC7kYj9hJYv9r/BsNAICUbdlWB6BdOz9wTtf/fU4kLLZtM2Po5o7oBM//pruoSdISfqnKsk5mgk9NVIos2asD2VsvBrtBlbxvQ6nEV/IdIskYcEDLb2YkWGbV3jsupZ0OzogoPf+M0sNGS02NuNBqYx8mX60lAEeQLqiZgKvvzeFTOyReg66JpGS90SfS5SISqnZMFUfp9dW0Hu2Pu8JhySMKu356R64Zwdsz6quk4kWH6ko3P2lf9wNv0u5usRk/CGGD2IbaVRTUzy2kVjASGnv/u9+K6b5Y5s3zJrxQejrcmJjWKTkq6EBQw8u1a6/UNY5QEUKyd1SGfILVeNixfRBtSH+yNsyzlqAq2q58XCOllCOPs32ATwr+k3Mf+htyMCxqqVh6B8XmU8bGWanRdSHuFY0zjUFLNZg/KXGQ2NHnax2ip9fT+m5lK0kpzlywvUNnG26dnTrMIiZPmudPY4O9tUphXKpHXrf43N5sea4SOBNFH42CPHr17pqURrWQhFVVY0MAwd2n2ncSyVh82A=
+deploy:
+  provider: releases
+  api_key:
+    secure: hIqOE1mPMCdcNgHzjIDBJB2Dk1ad9Lr1Jia4ndU7XtXO9pwfvSnX9A6/pPdWvzDL3DpUqgkvcyN/sUm4YSkLKifrEkbtfaEfpAkQgG5sig8S7Q9nnbFkkbpHnuZRFc5E7rAQo3Wzaq1XYp9XtnJ9AmqJMPQiu3UhkWR/2DaZdGEJEk2KNdEMWHFz2Y/G/Jwtrdwy0+4cyUHtLx3OqEGmJmRpscz7Ap9aABTdWvKtEDGuCJoCVF6TK2AILp4IzmQw3K+91Q4UtBBCwYXxmxwNI8PVJKwOi9rkWkDck3WSTIS+r/pTsazbWsMNEA0+avDENCcLlePailbcG4hhu6xI6Cjm1+CUHikA0/C7U7o263JMdmBywigjLMecn/Iw5Q6PfNsu/2AsnnXfyN1C4VQOXDRs3YB7ejEfNgFBvV0pf+6+HN4uWsDxOkJ/5WTEkcI6dH6y/Gw3eWBCKqywt+ahBhHa3lXN9hyKVvbijxiJ5mhLxEA+/8qhmGAlUXYP2wtIjjXJXnGhbumVOtBeubCir2SToiB31Ub1gs0m5pdXPRtL09fkBSY4TpAD9wx4oHdVxZadwFFaYJT18NRTAPMBKs5QLWsE7N3X1zj+KMYR4V81ljvVvNDgzF3byX8jdcu50wzTThUQqEWX/k5KhPVgyJ6TST4KNti3cqwWVCsMcTY=
+  file: pkg/dist/*/*
+  file_glob: true
+  skip_cleanup: true
+  on:
+    repo: hfm/mackerel-plugin-conntrack
+    condition: "$TRAVIS_GO_VERSION = 1.5.3"
+    tags: true
